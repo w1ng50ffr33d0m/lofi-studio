@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --bg-main: #18120e;
+    --bg-card: #ffebdc0a;
+    --bg-card-active: #e0702826;
+    --accent-primary: #e07028;
+    --accent-hover: #c45818;
+    --accent-secondary: #d99b38;
+    --text-primary: #f3e8df;
+    --text-header: #ffe2c8;
+    --text-muted: #bdaaa0;
+    --border-subtle: #ffc8a01f;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}
