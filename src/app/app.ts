@@ -13,6 +13,9 @@ export class App {
   // inject audioservice
   private audioService = inject(AudioService);
 
+  // store ids of tracks that were active before pause all button was clicked
+  private lastActiveTracks: string[] = [];
+
   // define list of tracks
   public tracks = signal<AudioTrack[]>([
     {
@@ -123,5 +126,37 @@ export class App {
     const slider = event.target as HTMLInputElement;
     const newPan = parseFloat(slider.value);
     this.audioService.setPan(track, newPan);
+  }
+
+  // helper that returns 1 if at least one track is currently playing
+  public isAnyTrackPlaying(): boolean {
+    return this.tracks().some(t => t.isPlaying);
+  }
+
+  // pause all playing tracks or resume all previously active tracks
+  public onMasterToggle(): void {
+    const currentTracks = this.tracks();
+
+    if (this.isAnyTrackPlaying()) {
+      this.lastActiveTracks = currentTracks.filter(t => t.isPlaying).map(t => t.id); // save track ids that are currently playing into array
+      this.audioService.pauseAll(currentTracks); // pause all tracks
+    } else {
+      // resume last saved tracks
+      if (this.lastActiveTracks.length > 0) {
+        currentTracks.forEach(track => {
+          if (this.lastActiveTracks.includes(track.id) && !track.isPlaying) {
+            this.audioService.togglePlay(track);
+          }
+        });
+      } else {
+        // if clicked before anything is playes, play the first track
+        if (currentTracks.length > 0) {
+          this.audioService.togglePlay(currentTracks[0]);
+        }
+      }
+    }
+    
+    // refresh ui
+    this.tracks.update(t => [...t]);
   }
 }

@@ -4,6 +4,12 @@
     <p>Find your focus with ambience sounds and Lofi music</p>
   </header>
 
+  <div class="master-controls">
+    <button class="pause-all-btn" (click)="onMasterToggle()">
+      {{ isAnyTrackPlaying() ? 'Pause All Sounds' : 'Resume Sounds' }}
+    </button>
+  </div>
+
   <main class="mixer-grid">
     @for (track of tracks(); track track.id) {
       <div class="track-card" [class.active]="track.isPlaying">

@@ -91,4 +91,14 @@ export class AudioService {
             track.pannerNode.pan.value = newPan;
         }
     }
+
+    // pause all playing tracks at once
+    public pauseAll(tracks: AudioTrack[]): void {
+        tracks.forEach(track => {
+            if (track.isPlaying && track.audioElement) {
+                track.audioElement.pause();
+                track.isPlaying = false;
+            }
+        });
+    }
 }
